@@ -1,0 +1,12 @@
+type Query {
+  getSentences: [Sentence!]!
+  getSentencesByCategoryId(categoryId: String!): [Sentence!]!
+}
+
+type Sentence {
+  fromSentence: String!
+  toSentence: String!
+  toSentenceKeywords: [String!]!
+  description: String
+  categoryId: String!
+}

@@ -1,0 +1,9 @@
+query getSentencesByCategoryId($categoryId: String!) {
+  getSentencesByCategoryId(categoryId: $categoryId) {
+    fromSentence
+    toSentence
+    toSentenceKeywords
+    description
+    categoryId
+  }
+}
