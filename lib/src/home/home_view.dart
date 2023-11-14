@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-import '../grammar_feature/grammar_view.dart';
-import '../sample_feature/sample_item_list_view.dart';
-import '../vocabulary_feature/vocabulary_view.dart';
+import '../grammar/grammar_view.dart';
+import '../sample/sample_item_list_view.dart';
+import '../vocabulary/vocabulary_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -31,10 +31,10 @@ class HomeView extends StatelessWidget {
               builder: (context) => const SampleItemListView(),
             ),
           1 => CupertinoTabView(
-              builder: (context) => const VocabularyView(),
+              builder: (context) => const GrammarView(),
             ),
           2 => CupertinoTabView(
-              builder: (context) => const GrammarView(),
+              builder: (context) => const VocabularyView(),
             ),
           _ => throw Exception('Invalid index $index'),
         };

@@ -1,12 +1,22 @@
+type Category {
+    id: String!
+    name: String!
+    sequence: Int!
+    description: String
+    parentId: String
+}
+
 type Query {
-  getSentences: [Sentence!]!
-  getSentencesByCategoryId(categoryId: String!): [Sentence!]!
+    getSentences: [Sentence!]!
+    getSentencesByCategoryId(categoryId: String!): [Sentence!]!
+    getCategories: [Category!]!
+    getCategoriesByParentId(parentId: String!): [Category!]!
 }
 
 type Sentence {
-  fromSentence: String!
-  toSentence: String!
-  toSentenceKeywords: [String!]!
-  description: String
-  categoryId: String!
+    id: Int!
+    sentence: String!
+    keywords: [String!]!
+    description: String
+    categoryId: String!
 }

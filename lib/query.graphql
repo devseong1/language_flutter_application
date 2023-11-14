@@ -1,9 +1,18 @@
 query getSentencesByCategoryId($categoryId: String!) {
-  getSentencesByCategoryId(categoryId: $categoryId) {
-    fromSentence
-    toSentence
-    toSentenceKeywords
-    description
-    categoryId
-  }
+    getSentencesByCategoryId(categoryId: $categoryId) {
+        sentence
+        keywords
+        description
+        categoryId
+    }
+}
+
+query getCategoriesByParentId($parentId: String!) {
+    getCategoriesByParentId(parentId: $parentId) {
+        id
+        name
+        sequence
+        description
+        parentId
+    }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'home_feature/home_view.dart';
+import 'home/home_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({
