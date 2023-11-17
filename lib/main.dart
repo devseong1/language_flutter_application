@@ -21,8 +21,18 @@ void main() async {
   ValueNotifier<GraphQLClient> client = ValueNotifier(
     GraphQLClient(
       link: link,
+      defaultPolicies: DefaultPolicies(
+        watchQuery: Policies(
+            fetch: FetchPolicy.cacheAndNetwork,
+            error: ErrorPolicy.none,
+            cacheReread: CacheRereadPolicy.mergeOptimistic),
+        watchMutation: Policies(
+            fetch: FetchPolicy.cacheAndNetwork,
+            error: ErrorPolicy.none,
+            cacheReread: CacheRereadPolicy.mergeOptimistic),
+      ),
       // The default store is the InMemoryStore, which does NOT persist to disk
-      cache: GraphQLCache(store: HiveStore()),
+      cache: GraphQLCache(store: InMemoryStore()),
     ),
   );
 

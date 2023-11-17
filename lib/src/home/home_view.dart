@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 import '../grammar/grammar_view.dart';
-import '../sample/sample_item_list_view.dart';
 import '../vocabulary/vocabulary_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -15,9 +14,6 @@ class HomeView extends StatelessWidget {
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house_fill),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.book_fill),
           ),
           BottomNavigationBarItem(
@@ -28,12 +24,9 @@ class HomeView extends StatelessWidget {
       tabBuilder: (context, index) {
         return switch (index) {
           0 => CupertinoTabView(
-              builder: (context) => const SampleItemListView(),
-            ),
-          1 => CupertinoTabView(
               builder: (context) => const GrammarView(),
             ),
-          2 => CupertinoTabView(
+          1 => CupertinoTabView(
               builder: (context) => const VocabularyView(),
             ),
           _ => throw Exception('Invalid index $index'),
