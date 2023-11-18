@@ -44,10 +44,6 @@ class _GrammarViewState extends State<GrammarView> {
           }
 
           return ListView.builder(
-            // Providing a restorationId allows the ListView to restore the
-            // scroll position when a user leaves and returns to the app after it
-            // has been killed while running in the background.
-            restorationId: 'GrammarView',
             itemCount: data.length,
             itemBuilder: (BuildContext context, int index) {
               return CupertinoListTile(
@@ -57,8 +53,7 @@ class _GrammarViewState extends State<GrammarView> {
                     // Navigate to the details page. If the user leaves and returns to
                     // the app after it has been killed while running in the
                     // background, the navigation stack is restored.
-                    Navigator.push(
-                      context,
+                    Navigator.of(context, rootNavigator: true).push(
                       CupertinoPageRoute(
                           builder: (context) => GrammarSentenceView(
                               categoryId: data[index].id,
