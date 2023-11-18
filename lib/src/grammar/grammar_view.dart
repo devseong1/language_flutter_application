@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:language_flutter_application/__generated/query.graphql.dart';
 import 'package:language_flutter_application/src/common/common_error.dart';
 
+import '../common/common_empty.dart';
 import 'grammar_sentence_view.dart';
 
 class GrammarView extends StatefulWidget {
@@ -12,7 +13,7 @@ class GrammarView extends StatefulWidget {
 }
 
 class _GrammarViewState extends State<GrammarView> {
-  final String rootCategory = 'english';
+  final String categoryId = 'english';
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,8 @@ class _GrammarViewState extends State<GrammarView> {
       ),
       child: Query$getCategoriesByParentId$Widget(
         options: Options$Query$getCategoriesByParentId(
-            variables: Variables$Query$getCategoriesByParentId(
-                parentId: rootCategory)),
+            variables:
+                Variables$Query$getCategoriesByParentId(parentId: categoryId)),
         builder: (result, {fetchMore, refetch}) {
           if (result.hasException) {
             return const CommonError();
@@ -35,16 +36,22 @@ class _GrammarViewState extends State<GrammarView> {
             );
           }
 
+          List<Query$getCategoriesByParentId$getCategoriesByParentId>? data =
+              result.parsedData?.getCategoriesByParentId;
+
+          if (data == null || data.isEmpty) {
+            return const CommonEmpty();
+          }
+
           return ListView.builder(
             // Providing a restorationId allows the ListView to restore the
             // scroll position when a user leaves and returns to the app after it
             // has been killed while running in the background.
-            restorationId: 'Grammar',
-            itemCount: result.parsedData!.getCategoriesByParentId.length,
+            restorationId: 'GrammarView',
+            itemCount: data.length,
             itemBuilder: (BuildContext context, int index) {
               return CupertinoListTile(
-                  title: Text(
-                      result.parsedData!.getCategoriesByParentId[index].name),
+                  title: Text(data[index].name),
                   trailing: const CupertinoListTileChevron(),
                   onTap: () {
                     // Navigate to the details page. If the user leaves and returns to
@@ -54,10 +61,8 @@ class _GrammarViewState extends State<GrammarView> {
                       context,
                       CupertinoPageRoute(
                           builder: (context) => GrammarSentenceView(
-                              categoryId: result.parsedData!
-                                  .getCategoriesByParentId[index].id,
-                              categoryName: result.parsedData!
-                                  .getCategoriesByParentId[index].name)),
+                              categoryId: data[index].id,
+                              categoryName: data[index].name)),
                     );
                   });
             },

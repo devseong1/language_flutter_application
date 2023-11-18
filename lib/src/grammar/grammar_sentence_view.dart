@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:language_flutter_application/__generated/query.graphql.dart';
+import 'package:language_flutter_application/src/common/common_empty.dart';
 
 import '../common/common_error.dart';
 
@@ -16,27 +16,6 @@ class GrammarSentenceView extends StatefulWidget {
 }
 
 class _GrammarSentenceViewState extends State<GrammarSentenceView> {
-  final _modelManager = OnDeviceTranslatorModelManager();
-  final _onDeviceTranslator = OnDeviceTranslator(
-      sourceLanguage: TranslateLanguage.english,
-      targetLanguage: TranslateLanguage.korean);
-
-  bool _isDownloadSourceModel = false;
-  bool _isDownloadTargetModel = false;
-
-  @override
-  void initState() {
-    _downloadSourceModel();
-    _downloadTargetModel();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _onDeviceTranslator.close();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -54,12 +33,17 @@ class _GrammarSentenceViewState extends State<GrammarSentenceView> {
                 return const CommonError();
               }
 
-              if (result.isLoading ||
-                  !_isDownloadSourceModel ||
-                  !_isDownloadTargetModel) {
+              if (result.isLoading) {
                 return const Center(
                   child: CupertinoActivityIndicator(),
                 );
+              }
+
+              List<Query$getSentencesByCategoryId$getSentencesByCategoryId>?
+                  data = result.parsedData?.getSentencesByCategoryId;
+
+              if (data == null || data.isEmpty) {
+                return const CommonEmpty();
               }
 
               return Center(
@@ -68,18 +52,9 @@ class _GrammarSentenceViewState extends State<GrammarSentenceView> {
                   children: [
                     CupertinoListSection.insetGrouped(
                       hasLeading: false,
-                      children: [
+                      children: const [
                         CupertinoListTile.notched(
-                          title: FutureBuilder<String>(
-                              future: _onDeviceTranslator.translateText(result
-                                  .parsedData!
-                                  .getSentencesByCategoryId[0]
-                                  .sentence),
-                              builder: (context, snapshot) {
-                                return Text(snapshot.data ??
-                                    result.parsedData!
-                                        .getSentencesByCategoryId[0].sentence);
-                              }),
+                          title: Text(''),
                         ),
                       ],
                     ),
@@ -95,8 +70,7 @@ class _GrammarSentenceViewState extends State<GrammarSentenceView> {
                       hasLeading: false,
                       children: [
                         CupertinoListTile.notched(
-                          title: _wordSection(result.parsedData!
-                              .getSentencesByCategoryId[0].sentence),
+                          title: _wordSection(data[0].sentence),
                         ),
                       ],
                     ),
@@ -130,29 +104,5 @@ class _GrammarSentenceViewState extends State<GrammarSentenceView> {
               )),
       ],
     );
-  }
-
-  Future<void> _downloadSourceModel() async {
-    _modelManager
-        .downloadModel(TranslateLanguage.english.bcpCode)
-        .then((value) => value
-            ? setState(() {
-                _isDownloadSourceModel = true;
-              })
-            : setState(() {
-                _isDownloadSourceModel = false;
-              }));
-  }
-
-  Future<void> _downloadTargetModel() async {
-    _modelManager
-        .downloadModel(TranslateLanguage.korean.bcpCode)
-        .then((value) => value
-            ? setState(() {
-                _isDownloadTargetModel = true;
-              })
-            : setState(() {
-                _isDownloadTargetModel = false;
-              }));
   }
 }
