@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'src/app.dart';
@@ -35,6 +36,9 @@ void main() async {
       cache: GraphQLCache(store: InMemoryStore()),
     ),
   );
+
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   runApp(GraphQLProvider(client: client, child: const MyApp()));
 }
